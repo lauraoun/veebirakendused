@@ -1,6 +1,8 @@
 <?php
 	
-	require_once "../../../conf.php";
+	require_once "../../../../conf.php";
+	require_once "usesession.php";
+	
 	
 	function read_news(){
 		//loome andmebaasis serveriga ja baasiga ühenduse
@@ -8,9 +10,9 @@
 		//määrame suhtluseks kodeeringu
 		$conn -> set_charset("utf8");
 		//valmistan ette SQL käsu
-		$stmt = $conn -> prepare("SELECT vr21_news_news_title, vr21_news_news_content, vr21_news_news_author, vr21_news_added FROM vr21_new ORDER BY vr21_news_id DESC LIMIT 3");
+		$stmt = $conn -> prepare("SELECT vr21_news_news_title, vr21_news_news_content, vr21_news_news_author, vr21_news_added, vr21_news_photo_filename, vr21_news_photo_alt_text FROM vr21_new LEFT JOIN vr21_news_photo ON vr21_news_photo_news_id = vr21_news_id ORDER BY vr21_news_id DESC LIMIT 3");
 		echo $conn -> error;
-		$stmt -> bind_result($news_title_from_db, $news_content_from_db, $news_author_from_db, $news_date_from_db);
+		$stmt -> bind_result($news_title_from_db, $news_content_from_db, $news_author_from_db, $news_date_from_db, $picture_file_from_db, $picture_alttext_from_db );
 		$stmt -> execute();
 		$raw_news_html = null;
 		while ($stmt -> fetch()){
@@ -18,12 +20,14 @@
 			$date_of_news = new DateTime($news_date_from_db);
 			$raw_news_html .= "\n <p>Uudis on lisatud: " .$date_of_news->format('d-m-Y') ."</p>";
 			$raw_news_html .= "\n <p>" .nl2br($news_content_from_db) ."</p>";
-			$raw_news_html .= "\n <p>Edastas: ";
+	
+			$raw_news_html .= "\n <p>Edastas:  ";
 			if(!empty($news_author_from_db)){
 				$raw_news_html .= $news_author_from_db;
 			} else {
 				$raw_news_html .= "Tundmatu reporter";
 			}
+			$raw_news_html .= '<br><img class="pilt" src="../upload_photos_news/' .$picture_file_from_db .'" alt="' .$picture_alttext_from_db .'">';
 			$raw_news_html .= "</p>";
 		}
 		$stmt -> close();
@@ -35,6 +39,7 @@
 	
 ?>
 <!DOCTYPE html>
+<link rel="stylesheet" href="stylee.css">
 <html lang="et">
 <head>
 	<meta charset="utf-8">
