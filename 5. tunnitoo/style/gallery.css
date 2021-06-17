@@ -1,0 +1,57 @@
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(170, 207, 238);
+    height: 100vh;
+
+}
+h1 {
+    color: #000000;
+     font-size: 3rem;
+     font-weight: 900; 
+    justify-content: center;
+}
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    p {
+        text-align: center;
+    }
+
+.gallery
+{
+	width: 80%;
+	align-self: center;
+
+	
+}
+
+.thumbgallery
+{
+	width: 100px;
+	height: 200px;
+	padding: 5px;
+	float: left;
+	margin-right: 5px;
+	align-content: center ;
+
+}
+
+.thumbs
+{
+    border-radius: 5px;
+    cursor: pointer;
+	opacity: 0.7;
+	transform-origin: 50% 50%;
+    transition: 0.3s;
+	filter: blur(1px);
+	align-content: center;
+}
+
+.thumbs:hover
+{	
+	opacity: 1;
+	filter: none;
+	transform: scale(1.05);
+}
